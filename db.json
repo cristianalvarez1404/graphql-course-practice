@@ -1,0 +1,24 @@
+{
+  "persons": [
+    {
+      "id": 1,
+      "name": "person1",
+      "phone": "123",
+      "street": "cr 123",
+      "city": "city 1"
+    },
+    {
+      "id": "2",
+      "name": "person2",
+      "phone": "1233",
+      "street": "cr 1233",
+      "city": "city 2"
+    },
+    {
+      "id": 3,
+      "name": "person3",
+      "street": "cr 1234",
+      "city": "city 1"
+    }
+  ]
+}
