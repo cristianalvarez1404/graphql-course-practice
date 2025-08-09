@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { gql, useLazyQuery } from "@apollo/client";
+import PersonForm from "./PersonForm";
 
 const FIND_PERSON = gql`
   query findPersonByName($nameToSearch: String!) {
@@ -55,12 +56,14 @@ const Persons = ({ persons }) => {
             backgroundColor: "green",
             marginBottom: "2rem",
             color: "white",
+            cursor: "pointer",
           }}
         >
           {p.name}
           {p.phone}
         </div>
       ))}
+      <PersonForm />
     </div>
   );
 };
