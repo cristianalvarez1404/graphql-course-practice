@@ -63,7 +63,6 @@ const Persons = ({ persons }) => {
           {p.phone}
         </div>
       ))}
-      <PersonForm />
     </div>
   );
 };
