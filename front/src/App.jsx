@@ -6,10 +6,14 @@ import { useState } from "react";
 import PersonForm from "./PersonForm";
 import Notify from "./Notify";
 import PhoneForm from "./PhoneForm";
+import LoginForm from "./LoginForm";
 
 function App() {
   const { data, error, loading } = useQuery(ALL_PERSONS);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [token, setToken] = useState(() =>
+    localStorage.getItem("phonenumbers-user-token")
+  );
 
   if (error) return <p>Error {error}</p>;
 
@@ -25,6 +29,7 @@ function App() {
         <Notify errorMessage={errorMessage} />
         {loading && <p>Loading...</p>}
         {data && <Persons persons={data.allPersons} />}
+        <LoginForm notifyError={notifyError} setToken={setToken} />
         <PersonForm notifyError={notifyError} />
         <PhoneForm />
       </div>
