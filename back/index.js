@@ -3,13 +3,20 @@ import {
   AuthenticationError,
   gql,
   UserInputError,
+  PubSub
 } from "apollo-server";
 import "./db.js";
 import Person from "./models/person.js";
 import User from "./models/user.js";
 import jwt from "jsonwebtoken";
 
+const pubsub = new PubSub()
+
 const JWT_SECRET = "123";
+
+const SUSCRIPTION_EVENTS = {
+  PERSON_ADDED: 'PERSON_ADDED'
+}
 
 const typeDefs = gql`
   enum YesNo {
@@ -62,6 +69,10 @@ const typeDefs = gql`
 
     addAsFriend(name: String!): User
   }
+
+  type Subscription {
+    personAdded: Person!
+  }
 `;
 
 const resolvers = {
@@ -95,6 +106,7 @@ const resolvers = {
           invalidArgs: args,
         });
       }
+      pubsub.publish(SUSCRIPTION_EVENTS.PERSON_ADDED, { personAdded: person })
       return person;
     },
     editNumber: async (root, args) => {
@@ -160,6 +172,11 @@ const resolvers = {
       };
     },
   },
+  Subscription: {
+    personAdded: {
+      subscribe:() => pubsub.asyncIterator(SUSCRIPTION_EVENTS.PERSON_ADDED)
+    }
+  }
 };
 
 const server = new ApolloServer({
@@ -177,6 +194,7 @@ const server = new ApolloServer({
   },
 });
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(url);
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 });
